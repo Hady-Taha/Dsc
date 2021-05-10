@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+<div class="container" style="margin-top: 5rem;">
+    <div class="row">
+        <div class="col-md-6">
+           <img class="mb-3 img-fluid w-100 h-100" width="400" height="400" src='{% static "main/img/code.svg" %}' alt='' />
+        </div>
+        <div class="col-md-6">
+            <h1><span class="text-primary">L</span>ogin</h1>
+            <div class="card bg-light shadow-sm ">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-success shadow mt-3" type="submit">Login</button>
+
+                        </div>
+
+                    </form>
+                    <p class="text-center mt-3">if you don't have an account <a
+                            href="{% url 'register' %} ">Register</a>
+                            <br>
+                        <a class="mt-3" href="{% url 'reset_password' %}">Forget Password ?</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

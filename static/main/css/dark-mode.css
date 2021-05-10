@@ -1,0 +1,74 @@
+[data-theme="dark"] {
+  background-color: #111 !important;
+  color: #eee;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: #333 !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: #000 !important;
+}
+
+[data-theme="dark"] .bg-black {
+  background-color: #eee !important;
+}
+
+[data-theme="dark"] .navbar a {
+  color: #eee !important;
+}
+
+[data-theme="dark"] a {
+  color: #ffffff !important;
+  
+}
+
+[data-theme="dark"] a:hover {
+  color: #2ec4ff !important;
+}
+
+
+
+
+[data-theme="dark"] .modal-header,
+.modal-footer {
+  border-color: rgb(87, 86, 86) !important;
+}
+
+[data-theme="dark"] .list-group-item {
+  color: #eee !important;
+  border: none !important;
+}
+
+
+[data-theme="dark"] .fas
+{
+  color: #eee !important;
+
+}
+[data-theme="dark"] .text-dark {
+  color: #eee !important;
+
+}
+
+[data-theme="dark"] input {
+  background-color: #333 !important;
+  border-color: rgb(0, 0, 0);
+  color: #eee;
+}
+[data-theme="dark"] input:focus {
+  color: #eee;
+}
+
+
+
+[data-theme="dark"] textarea {
+  background-color: #333 !important;
+  border-color: rgb(0, 0, 0);
+  color: #eee;
+}
+
+[data-theme="dark"] textarea:focus {
+  color: #eee;
+}

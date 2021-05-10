@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load i18n %}
+
+<div class="container" style="margin-top: 5rem;">
+    <div class="row">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert text-center alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="col-md-12 ">
+            <h3> Last Article </h3>
+            <div class=" card bg-dark text-white animate__animated animate__fadeIn">
+                <img src="{{articles.first.cover.url}}" style="filter: blur(3px);" height="350"
+                    class=" mask-custom-1 card-img " alt="..." />
+                <div class="card-img-overlay">
+                    <a class="text-white" href="{% url 'article' articles.first.slug %}">
+                        <h2 class="card-title " style="backdrop-filter: blur(5px);">{{articles.first.title}}</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <h3 class="mt-5">Catagories </h3>
+        <div class="row mt-3">
+            {% for category in categories %}
+            <div class="col-md-4">
+                <a href="{% url 'category' category.slug %}">
+                    <div class="card border-0 mb-3 hover-shadow ">
+                        <img width="200" height="200" style="filter: blur(2px);" src="{{category.cover.url}}"
+                            class=" card-img" alt="..." />
+                        <div class="card-img-overlay  ">
+                            <h5 class="card-title text-white">
+                                {{category.title}}
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row mt-5 ">
+            <div class="col-md-8">
+                <h3>Article's <span class="textSearch"></span> </h3>
+                <form method="POST" class="search d-flex input-group w-auto mb-3" data-url=" {% url 'search' %} ">
+                    {% csrf_token %}
+                    <input name="searchText" type="search" class="rounded-pill form-control searchInput"
+                        placeholder="Search In Article's..." aria-label="Search" />
+                    <button class="rounded-pill ms-1 btn btn-outline-primary" type="submit"
+                        data-mdb-ripple-color="dark">
+                        Search
+                    </button>
+                </form>
+                <div class="result">
+                    {% include "article/titleArticle.html" %}
+                </div>
+            </div>
+            <div class="col-md-4 order-md-last order-first">
+                <h3>Top 3 Article's </h3>
+                <ol class="list-group bg-light list-group-numbered">
+                    {% for topLike in topLikes %}
+                    <li class="list-group-item bg-light d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">
+                                <a href="{% url 'article' topLike.slug %}">
+                                    {{topLike.title}}
+                                </a>
+                            </div>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{topLike.get_all_like.count}} like </span>
+                    </li>
+                    {% endfor %}
+                </ol>
+                <div class="card bg-light shadow-0 text-center mt-5 mb-3">
+                    <div class="card-header">
+                        {% trans "About Us" %}
+                        
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {% trans 'Special title treatment' %}
+                            
+                        </h5>
+                        <p class="card-text">
+                            {% trans ' With supporting text below as a natural lead-in to additional content.' %}
+                        </p>
+                        <a href="#" class="rounded-pill btn btn-sm btn-outline-primary">
+                            <i class="fab fa-facebook-f text-sm-center"></i>
+                        </a>
+                        <a href="#" class="rounded-pill btn btn-sm btn-outline-primary">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                    <small class="card-footer text-muted">{% trans 'Developed by' %} <a target="_blank"
+                            href="https://twitter.com/HadyTaha77">
+                            {% trans 'Hady Taha' %}
+                            
+                        </a> </small>
+
+                </div>
+                {% load i18n %}
+
+                <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                    <input name="next" type="hidden" value="{{ redirect_to }}">
+                    <select name="language">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="btn btn-outline-primary btn-sm" value="Go">
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+    {% endblock content %}

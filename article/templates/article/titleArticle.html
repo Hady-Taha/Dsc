@@ -1,0 +1,68 @@
+{% load static %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert text-center alert-{{message.tags}}">
+    {{message}} 🔎
+</div>
+{% endfor %}
+{% endif %}
+{% for article in articles %}
+<div class="card bg-light mb-3 shadow rounded-3" data-aos="fade-up">
+    <div class="card-body">
+        <span class="badge bg-dark text-white ms-2 float-end">{{article.category}}</span>
+        <h5 class="card-title ">
+            <img src='{{article.auth.photo.url}}' width="30" height="30" class="rounded-circle" alt='' />
+            <a href="{% url 'profile' article.auth.slug %}">{{article.auth}}</a>
+        </h5>
+        <h2 class="card-text text-center p-3">
+            <a href="{% url 'article' article.slug  %}">{{article.title}}</a>
+        </h2>
+        {% if request.user.is_authenticated%}
+
+        <div class="reacts">
+            <form method="post" data-url=" {% url 'like' %}" id="{{article.id}}" class="like d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="postId" value="{{article.id}}">
+                <button type="submit" class="btn-sm  shadow-0 btn btn-primary rounded-pill" style="border: none;">
+                    {% if request.user.profile in article.get_all_like %}
+                    <i id="like{{article.id}}" class="fa fa-heart"></i>
+                    {% else %}
+                    <i id="like{{article.id}}" class="far fa-heart"></i>
+                    {% endif %}
+                    <span class="likeCount{{article.id}}">{{article.get_all_like.count}}</span>
+                </button>
+            </form>
+            <a href="{% url 'article' article.slug  %}#comments" class="btn btn-sm btn-primary shadow-0 rounded-pill"
+                style="border: none;">
+                <i class=" far fa-comment-alt"></i>
+                {{article.get_all_comments.count}}
+            </a>
+            <form method="post" data-id="{{article.id}}" data-url=" {% url 'saveArticle' %}"
+                class="saveArticle d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="postId" value="{{article.id}}">
+                <button type="submit"
+                    class="btn  saveArticleButton{{article.id}} btn-sm btn-primary shadow-0 rounded-pill"
+                    style="border: none;">
+                    {% if article in request.user.profile.get_all_bookmarked %}
+                    <i id="bookmark{{article.id}}" class="fa fa-bookmark"></i>
+                    {% else %}
+                    <i id="bookmark{{article.id}}" class="far fa-bookmark"></i>
+                    {% endif %}
+                    <span class="spinner-save{{article.id}} spinner-border  spinner-border-sm" style="display: none;"
+                        role="status" aria-hidden="true"></span>
+                </button>
+            </form>
+            <small class="float-end">{{article.created|date:"SHORT_DATE_FORMAT"}} -
+                {{article.created|time:"H:i" }}</small>
+        </div>
+        {% else %}
+        <p>you can like and save article if <a href="{% url 'login' %}">login</a> or <a
+                href="{% url 'register' %}">Register</a> </p>
+        {%endif%}
+    </div>
+</div>
+{% endfor %}
+<script type="text/javascript" src="{% static 'main/' %}js/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'main/' %}js/article.js"></script>

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container" style="margin-top: 5rem;">
+    <div class="row">
+        <div class="col-md-12 border-dark border-5">
+             {% if request.user.is_authenticated%}
+            <div class="reacts m-3">
+                <form method="post" data-url=" {% url 'like' %}" id="{{article.id}}" class="like d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="postId" value="{{article.id}}">
+                    <button type="submit" class="btn-sm  shadow-0 btn btn-primary rounded-pill" style="border: none;">
+                        {% if request.user.profile in article.get_all_like %}
+                        <i id="like{{article.id}}" class="fa fa-heart"></i>
+                        {% else %}
+                        <i id="like{{article.id}}" class="far fa-heart"></i>
+                        {% endif %}
+                        <span class="likeCount{{article.id}}">{{article.get_all_like.count}}</span>
+                    </button>
+                </form>
+                <a href="{% url 'article' article.slug  %}#comments"
+                    class="btn btn-sm btn-primary shadow-0 rounded-pill" style="border: none;">
+                    <i class=" far fa-comment-alt"></i>
+                    {{article.get_all_comments.count}}
+                </a>
+                <form method="post" data-id="{{article.id}}" data-url=" {% url 'saveArticle' %}"
+                    class="saveArticle d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="postId" value="{{article.id}}">
+                    <button type="submit"
+                        class="btn  saveArticleButton{{article.id}} btn-sm btn-primary shadow-0 rounded-pill"
+                        style="border: none;">
+                        {% if article in request.user.profile.get_all_bookmarked %}
+                        <i id="bookmark{{article.id}}" class="fa fa-bookmark"></i>
+                        {% else %}
+                        <i id="bookmark{{article.id}}" class="far fa-bookmark"></i>
+                        {% endif %}
+                        <span class="spinner-save{{article.id}} spinner-border  spinner-border-sm"
+                            style="display: none;" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+                <small class="float-end">{{article.created|date:"SHORT_DATE_FORMAT"}} -
+                    {{article.created|time:"H:i" }}</small>
+            </div>
+            {% else %}
+            <p>you can like and save article if <a href="{% url 'login' %}">login</a> or <a
+                    href="{% url 'register' %}">Register</a> </p>
+            {%endif%}
+        </div>
+        <div class="col-md-12">
+            <div>
+                <h2 class="text-center">{{article.title}}</h2>
+                <img src="{{article.cover.url}}" class=" w-100 img-fluid" alt="">
+            </div>
+            {{article.content|safe}}
+        </div>
+
+        <hr>
+        <div class="col-md-6">
+            <h4>created by</h4>
+            <div class="card bg-light shadow-0">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'profile' article.auth.slug %}">
+                            <img src='{{article.auth.photo.url}}' width="50" height="50" class="rounded-circle"
+                                alt='' />
+                            {{article.auth}}
+                        </a>
+                    </h5>
+                    <p class="card-text">
+                        {{article.auth.bio}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <h3 class="mt-3"> Comments</h3>
+        <div class="col-md-6" id="comments">
+            {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" name="addComment" class="btn mt-2 btn-sm btn-primary">Comment</button>
+            </form>
+            {% else %}
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        you can comment if <a href="{% url 'login' %}">Login</a>
+                    </h4>
+                </div>
+            </div>
+            {% endif %}
+            {% if article.get_all_comments %}
+            {% for comment in article.get_all_comments %}
+            <div class="card mt-3 mb-3 bg-light">
+                <img class="card-img-top" src="" alt="">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <img src='{{comment.user.photo.url}}' width="30" height="30" class="rounded-circle" alt='' />
+                        {{comment.user}}
+                    </h6>
+                    <h4 class="card-text">
+                        {{comment.content}}
+                    </h4>
+                    {% if comment.user == request.user.profile   %}
+                    <form method="POST" class="deleteComment" data-url="{% url 'article' article.slug %}"
+                        id="{{comment.id}}">
+                        {% csrf_token %}
+                        <input type="hidden" class="idComment" name="deleteComment" value="{{comment.id}}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash-alt" style="color: red !important;"></i>
+                            delete
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card mt-3 mb-3 bg-light">
+                <img class="card-img-top" src="" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        No Comment Yet
+                    </h5>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% load static %}
+<script type="text/javascript" src="{% static 'main/' %}js/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'main/' %}js/article.js"></script>
+
+{% endblock content %}

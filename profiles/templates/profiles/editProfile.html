@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container " style="margin-top: 5rem;">
+    <div class="row d-flex flex-column justify-content-center align-items-center">
+        <div class="col-md-6">
+            <img width="50px" height="50" class="rounded-circle" src="{{profile.photo.url}}" alt="">
+            <form method="post">
+                {% csrf_token %}
+                {{formUser|crispy}}
+                {{formProfile|crispy}}
+                <button type="submit" class="btn mt-3 btn-primary">Submit</button>
+            </form>
+            <a href="{% url 'reset_password' %}">
+                reset password
+            </a>
+            <button type="button" class="btn mt-3 float-end btn-outline-danger" data-mdb-toggle="modal"
+                data-mdb-target="#exampleModal">
+                Delete My Account
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog bg-light">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut eligendi ipsum perspiciatis, modi non et
+                asperiores totam sequi neque corporis id at quia corrupti aspernatur. Earum dolore eos veritatis totam.
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Close</button>
+                <form method="post">
+                    {% csrf_token %}
+                    <button name="deleteForm" type="submit" class="btn  btn-danger">Delete My Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

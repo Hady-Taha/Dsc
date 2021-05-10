@@ -1,0 +1,43 @@
+<!DOCTYPE html> {% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+    <title>{{title}}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <link rel="icon" href="{% static 'main/img/google.svg' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/all.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/mdb.rtl.min.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/mdb.min.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/dark-mode.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/aos.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/' %}css/main.css">
+    <!--Dark Mood--
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" id="darkSwitch">
+				<label class="form-check-label" for="darkSwitch">Dark Mode</label>
+			</div>
+	--Dark Mood-->
+</head>
+
+<body>
+
+    {% include 'base/navbar.html' %}
+    {% block content %}
+
+    {% endblock content %}
+    
+    <script type="text/javascript" src="{% static 'main/' %}js/mdb.min.js"></script>
+    <script type="text/javascript" src="{% static 'main/' %}js/aos.js"></script>
+    <script type="text/javascript" src="{% static 'main/' %}js/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'main/' %}js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{% static 'main/' %}js/dark-mode-switch.js"></script>
+    <script type="text/javascript" src="{% static 'main/' %}js/main.js"></script>
+    <script>
+
+    </script>
+</body>
+
+</html>
