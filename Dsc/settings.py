@@ -176,10 +176,10 @@ CKEDITOR_CONFIGS = {
 }
 CKEDITOR_UPLOAD_PATH='ckeditor/'
 
-
+STATIC_ROOT = os.path.join(BASE_DIR , 'static')
 STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-STATICFILES_DIRS = [(BASE_DIR/'static')]
+# STATICFILES_DIRS = [(BASE_DIR/'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = (BASE_DIR/'media')
